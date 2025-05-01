@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client"
 
 import type React from "react"
@@ -121,7 +122,7 @@ const JobDetails: React.FC<JobDetailsProps> = ({ job }) => {
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-base font-medium text-[#E2E2E6]">Quantum Circuit Visualization</h2>
                 <Badge variant="outline" className="text-xs font-normal text-[#8A8A93] border-[#2E2E34] px-2">
-                  Grover's Algorithm
+                  Grover&apos;s Algorithm
                 </Badge>
               </div>
               <QuantumCircuit targetKey={job.target_key} />
