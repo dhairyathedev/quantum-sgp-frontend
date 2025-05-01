@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Loader2, AlertTriangle, Lock, ChevronRight, Server, Cpu } from "lucide-react"
+import { Loader2, AlertTriangle, Lock, ChevronRight, Server, Cpu, ListFilter } from "lucide-react"
 import QuantumCircuit from "@/components/quantum-circuit"
 import ProbabilityChart from "@/components/probability-chart"
 import SecurityPanel from "@/components/security-panel"
@@ -15,6 +15,7 @@ import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { toast } from "@/components/ui/use-toast"
 import { Toaster } from "@/components/ui/toaster"
+import Link from "next/link"
 
 interface QuantumSearchResult {
   dataset: Record<string, string>
@@ -168,12 +169,12 @@ export default function Home() {
               <Lock className="h-4 w-4 text-white" />
             </div>
             <div>
-              <h1 className="text-xl font-medium tracking-tight">Quantum Key Finder</h1>
+              <h1 className="text-xl font-medium tracking-tight">Grover&apos;s Algorithm Simulation</h1>
               <div className="flex items-center gap-2 mt-0.5">
                 <Badge variant="outline" className="text-xs font-normal text-[#8A8A93] border-[#2E2E34] px-1.5 py-0">
                   v2.0.0
                 </Badge>
-                <span className="text-xs text-[#8A8A93]">Grover's Algorithm</span>
+                <span className="text-xs text-[#8A8A93]">Grover&apos;s Algorithm</span>
               </div>
             </div>
           </motion.div>
@@ -198,6 +199,16 @@ export default function Home() {
               {jobLoading ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Server className="h-4 w-4 mr-2" />}
               Run on Quantum Hardware
             </Button>
+
+            <Link href="/jobs">
+              <Button
+                variant="outline"
+                className="border-[#2E2E34] hover:border-[#4D4D56] hover:bg-[#1E1E22] text-[#E2E2E6] h-9 px-4 rounded-md transition-all duration-200 shadow-sm"
+              >
+                <ListFilter className="h-4 w-4 mr-2" />
+                View Jobs
+              </Button>
+            </Link>
           </div>
         </div>
       </motion.header>
@@ -257,7 +268,7 @@ export default function Home() {
               </>
             ) : (
               <div className="p-8 text-center text-[#8A8A93]">
-                <p>No quantum hardware jobs submitted yet. Click "Run on Quantum Hardware" to start.</p>
+                <p>No quantum hardware jobs submitted yet. Click &quot;Run on Quantum Hardware&quot; to start.</p>
               </div>
             )}
           </TabsContent>
@@ -269,7 +280,7 @@ export default function Home() {
         <div className="container max-w-7xl mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="text-[#8A8A93] text-sm">
-              Quantum Key Finder — Visualizing Grover's Algorithm for cryptographic key search
+              Quantum Key Finder — Visualizing Grover&apos;s Algorithm for cryptographic key search
             </div>
             <div className="flex items-center gap-6">
               <a
@@ -387,7 +398,7 @@ const ResultsDisplay = ({ data, isHardware = false }: ResultsDisplayProps) => (
           <h2 className="text-base font-medium text-[#E2E2E6]">Quantum Circuit Visualization</h2>
           <div className="flex items-center gap-2">
             <Badge variant="outline" className="text-xs font-normal text-[#8A8A93] border-[#2E2E34] px-2">
-              Grover's Algorithm
+              Grover&apos;s Algorithm
             </Badge>
             {isHardware && (
               <Badge className="text-xs font-normal bg-[#00C2FF] text-black px-2">Hardware Verified</Badge>

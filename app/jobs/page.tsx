@@ -73,14 +73,23 @@ export default function JobsPage() {
   // Fetch job details
   const fetchJobDetails = useCallback(async (jobId: string) => {
     try {
-      const response = await fetch(`${API_BASE_URL}/job_details/${jobId}`)
+      console.log("Fetching job details for:", jobId)
+      const response = await fetch(`${API_BASE_URL}/job_details/${jobId}`, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Cache-Control': 'no-cache'
+        },
+      })
       if (!response.ok) {
         throw new Error(`API error: ${response.status}`)
       }
       const data = await response.json()
+      console.log("Job details received:", data)
       setSelectedJob(data)
       return data
     } catch (err) {
+      console.error("Error fetching job details:", err)
       toast({
         title: "Error",
         description: err instanceof Error ? err.message : "Failed to fetch job details",
@@ -91,12 +100,10 @@ export default function JobsPage() {
   }, [])
 
   // Handle job selection
-  const handleJobSelect = async (jobId: string) => {
-    const job = await fetchJobDetails(jobId)
-    if (job) {
-      setSelectedJob(job)
-    }
-  }
+  const handleJobSelect = useCallback(async (jobId: string) => {
+    console.log("Job selected:", jobId)
+    await fetchJobDetails(jobId)
+  }, [fetchJobDetails])
 
   // Handle refresh button click
   const handleRefresh = () => {
@@ -293,7 +300,42 @@ export default function JobsPage() {
                           ? "bg-[#1E1E22] border-[#00C2FF]"
                           : "bg-[#18181C] border-[#2E2E34] hover:border-[#4D4D56]"
                       }`}
-                      onClick={() => handleJobSelect(job.job_id)}
+                      onClick={() => {
+                        console.log("Direct job click:", job.job_id);
+                        
+                        // Show loading state
+                        setLoading(true);
+                        
+                        // Make the API call directly here
+                        fetch(`${API_BASE_URL}/job_details/${job.job_id}`, {
+                          method: 'GET',
+                          headers: {
+                            'Accept': 'application/json',
+                            'Cache-Control': 'no-cache'
+                          },
+                        })
+                        .then(response => {
+                          if (!response.ok) {
+                            throw new Error(`API error: ${response.status}`);
+                          }
+                          return response.json();
+                        })
+                        .then(data => {
+                          console.log("Job details fetched:", data);
+                          setSelectedJob(data);
+                        })
+                        .catch(err => {
+                          console.error("Error in direct fetch:", err);
+                          toast({
+                            title: "Error",
+                            description: err instanceof Error ? err.message : "Failed to fetch job details",
+                            variant: "destructive",
+                          });
+                        })
+                        .finally(() => {
+                          setLoading(false);
+                        });
+                      }}
                       whileHover={{ scale: 1.01 }}
                       whileTap={{ scale: 0.99 }}
                     >
